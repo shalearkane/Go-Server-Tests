@@ -1,0 +1,31 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: An AWS Lambda application that calls the Lambda API.
+
+Parameters:
+  mongodburl:
+    Type: String
+    Description: MongoDB Url
+    Default: $ATLAS_URI}
+
+Resources:
+  API:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: server
+      Runtime: go1.x
+      CodeUri: API/.
+      Description: Store data in Mongodb
+      Timeout: 30
+      MemorySize: 128
+      # Function's execution role
+      Tracing: Active
+      Events:
+        API:
+          Type: Api
+          Properties:
+            Path: /hello
+            Method: post
+      Environment:
+        Variables:
+          ATLAS_URI: !Ref mongodburl
