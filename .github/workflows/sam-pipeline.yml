@@ -1,0 +1,26 @@
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v3
+        with:
+          go-version: '>=1.17.0'
+      - run: go version
+      - uses: aws-actions/setup-sam@v1
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
+      # sam build
+      - run: sam build --use-container --parameter-overrides 'ParameterKey=mongodburl,ParameterValue=${{ secrets.MONGODB_URL }}'
+
+# Run Unit tests- Specify unit tests here
+
+# sam deploy
+      - run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --stack-name sam-go-api2 --s3-bucket tpc-code-build --capabilities CAPABILITY_IAM --region ap-south-1 --parameter-overrides 'ParameterKey=mongodburl,ParameterValue=${{ secrets.MONGODB_URL }}'
