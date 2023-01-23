@@ -23,9 +23,9 @@ type RecruiterFetch struct {
 }
 
 type DBRef struct {
-	Ref interface{} `bson:"$ref"`
-	ID  interface{} `bson:"$id"`
-	DB  interface{} `bson:"$db"`
+	Ref string             `bson:"$ref" json:"$ref"`
+	ID  primitive.ObjectID `bson:"$id" json:"$id"`
+	DB  string             `bson:"$db" json:"$db"`
 }
 
 type Company struct {
