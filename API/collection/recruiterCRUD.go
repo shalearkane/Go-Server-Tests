@@ -4,6 +4,7 @@ import (
 	constant "API/constant"
 	model "API/model"
 	s3 "API/s3"
+	"fmt"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -20,6 +21,15 @@ func RecruiterCreate(r map[string]interface{}, client *mongo.Client, sessionCont
 	}
 
 	recruiter.Selfie, _ = s3.Upload(r["selfie"].(string))
+
+	if CompanyArray, ok := r["companyArray"].([]interface{}); ok {
+		for _, element := range CompanyArray {
+			if c, ok := element.(map[string]interface{}); ok {
+				dbref, _ := companyCreate(c, client, sessionContext)
+				recruiter.CompanyArray = append(recruiter.CompanyArray, dbref)
+			}
+		}
+	}
 
 	recruiterCollection := client.Database(constant.DB).Collection(constant.RecruiterCollection)
 	result, err := recruiterCollection.InsertOne(sessionContext, recruiter)

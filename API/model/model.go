@@ -5,17 +5,18 @@ import (
 )
 
 type Recruiter struct {
-	FirstName  string `json:"firstName"`
-	MiddleName string `json:"middleName"`
-	LastName   string `json:"lastName"`
-	Gender     string `json:"gender"`
-	Phone      string `json:"phone"`
-	Email      string `json:"email"`
-	IsActive   bool   `json:"isActive"`
-	CreatedAt  primitive.DateTime
-	UpdatedAt  primitive.DateTime
-	Company    DBRef
-	Selfie     string `json:"selfie"`
+	FirstName    string `json:"firstName"`
+	MiddleName   string `json:"middleName"`
+	LastName     string `json:"lastName"`
+	Gender       string `json:"gender"`
+	Phone        string `json:"phone"`
+	Email        string `json:"email"`
+	IsActive     bool   `json:"isActive"`
+	CreatedAt    primitive.DateTime
+	UpdatedAt    primitive.DateTime
+	Company      DBRef
+	Selfie       string  `json:"selfie"`
+	CompanyArray []DBRef `json:"companyArray"`
 }
 
 type RecruiterFetch struct {
