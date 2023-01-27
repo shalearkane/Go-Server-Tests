@@ -2,7 +2,6 @@ package main
 
 import (
 	collection "API/collection"
-	constant "API/constant"
 	"context"
 	"encoding/json"
 	"os"
@@ -14,16 +13,16 @@ import (
 )
 
 // Stores a handle to the database being used by the Lambda function
-type DB struct {
-	database *mongo.Database
+type Connection struct {
+	client *mongo.Client
 }
 
-func (db DB) handleRequest(i context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+func (client Connection) handleRequest(i context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	var ijson map[string]interface{}
 
 	json.Unmarshal([]byte(request.Body), &ijson)
 
-	cDBRef := collection.RecruiterCreate(ijson, db.database)
+	cDBRef := collection.RecruiterCreate(ijson, client.client)
 
 	data := map[string]interface{}{"data": cDBRef}
 	jsonStr, _ := json.Marshal(data)
@@ -41,8 +40,8 @@ func main() {
 
 	defer client.Disconnect(ctx)
 
-	connection := DB{
-		database: client.Database(constant.DB),
+	connection := Connection{
+		client: client,
 	}
 
 	lambda.Start(connection.handleRequest)
