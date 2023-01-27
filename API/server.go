@@ -22,7 +22,7 @@ func (client Connection) handleRequest(i context.Context, request events.APIGate
 
 	json.Unmarshal([]byte(request.Body), &ijson)
 
-	cDBRef := collection.RecruiterCreate(ijson, client.client)
+	cDBRef := collection.Transaction("recruiter", ijson, client.client)
 
 	data := map[string]interface{}{"data": cDBRef}
 	jsonStr, _ := json.Marshal(data)

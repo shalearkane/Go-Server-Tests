@@ -3,27 +3,24 @@ package collection
 import (
 	constant "API/constant"
 	model "API/model"
-	"context"
-	"time"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
-	"go.mongodb.org/mongo-driver/mongo/readconcern"
-	"go.mongodb.org/mongo-driver/mongo/writeconcern"
 )
 
-func RecruiterCreate(r map[string]interface{}, client *mongo.Client) model.DBRef {
+func RecruiterCreate(r map[string]interface{}, client *mongo.Client, sessionContext mongo.SessionContext) (model.DBRef, error) {
 	var recruiter model.Recruiter
 
 	company := r["company"].(map[string]interface{})
-	recruiter.Company = companyCreate(company, client)
+	recruiter.Company, _ = companyCreate(company, client, sessionContext)
 
 	if FirstName, ok := r["firstName"].(string); ok {
 		recruiter.FirstName = FirstName
 	}
 
-	result := recruiterCreateTransact(recruiter, client)
+	recruiterCollection := client.Database(constant.DB).Collection(constant.RecruiterCollection)
+	result, err := recruiterCollection.InsertOne(sessionContext, recruiter)
+
 	cDBRef := model.DBRef{}
 
 	if InsertedID, ok := result.InsertedID.(primitive.ObjectID); ok {
@@ -32,36 +29,5 @@ func RecruiterCreate(r map[string]interface{}, client *mongo.Client) model.DBRef
 		cDBRef.Ref = constant.RecruiterCollection
 
 	}
-
-	return cDBRef
-}
-
-func recruiterCreateTransact(r model.Recruiter, client *mongo.Client) *mongo.InsertOneResult {
-	wc := writeconcern.New(writeconcern.WMajority())
-	rc := readconcern.Snapshot()
-	txnOpts := options.Transaction().SetWriteConcern(wc).SetReadConcern(rc)
-
-	session, err := client.StartSession()
-	if err != nil {
-		panic(err)
-	}
-	defer session.EndSession(context.Background())
-
-	callback := func(sessionContext mongo.SessionContext) (interface{}, error) {
-		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
-		defer cancel()
-
-		recruiterCollection := client.Database(constant.DB).Collection(constant.RecruiterCollection)
-
-		result, err := recruiterCollection.InsertOne(ctx, r)
-
-		return result, err
-	}
-
-	result, err := session.WithTransaction(context.Background(), callback, txnOpts)
-	if err != nil {
-		panic(err)
-	} else {
-		return result.(*mongo.InsertOneResult)
-	}
+	return cDBRef, err
 }
