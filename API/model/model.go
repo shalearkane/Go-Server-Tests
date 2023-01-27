@@ -15,6 +15,7 @@ type Recruiter struct {
 	CreatedAt  primitive.DateTime
 	UpdatedAt  primitive.DateTime
 	Company    DBRef
+	Selfie     string `json:"selfie"`
 }
 
 type RecruiterFetch struct {

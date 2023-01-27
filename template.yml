@@ -6,7 +6,7 @@ Parameters:
   mongodburl:
     Type: String
     Description: MongoDB Url
-    Default: $ATLAS_URI}
+    Default: ${ATLAS_URI}
 
 Resources:
   API:
@@ -29,3 +29,6 @@ Resources:
       Environment:
         Variables:
           ATLAS_URI: !Ref mongodburl
+          AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+          AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+          AWS_BUCKET: ${AWS_BUCKET}

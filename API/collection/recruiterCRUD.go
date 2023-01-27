@@ -3,6 +3,7 @@ package collection
 import (
 	constant "API/constant"
 	model "API/model"
+	s3 "API/s3"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -17,6 +18,8 @@ func RecruiterCreate(r map[string]interface{}, client *mongo.Client, sessionCont
 	if FirstName, ok := r["firstName"].(string); ok {
 		recruiter.FirstName = FirstName
 	}
+
+	recruiter.Selfie, _ = s3.Upload(r["selfie"].(string))
 
 	recruiterCollection := client.Database(constant.DB).Collection(constant.RecruiterCollection)
 	result, err := recruiterCollection.InsertOne(sessionContext, recruiter)
