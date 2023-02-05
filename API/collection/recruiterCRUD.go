@@ -12,8 +12,8 @@ import (
 func RecruiterCreate(r map[string]interface{}, client *mongo.Client, sessionContext mongo.SessionContext) (model.DBRef, error) {
 	var recruiter model.Recruiter
 
-	company := r["company"].(map[string]interface{})
-	recruiter.Company, _ = companyCreate(company, client, sessionContext)
+	// company := r["company"].(map[string]interface{})
+	// recruiter.Company, _ = companyCreate(company, client, sessionContext)
 
 	if FirstName, ok := r["firstName"].(string); ok {
 		recruiter.FirstName = FirstName
