@@ -2,12 +2,6 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: 'AWS::Serverless-2016-10-31'
 Description: An AWS Lambda application that calls the Lambda API.
 
-Parameters:
-  mongodburl:
-    Type: String
-    Description: MongoDB Url
-    Default: ${ATLAS_URI}
-
 Resources:
   API:
     Type: AWS::Serverless::Function
@@ -28,7 +22,5 @@ Resources:
             Method: post
       Environment:
         Variables:
-          ATLAS_URI: !Ref mongodburl
-          AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
-          AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+          ATLAS_URI: ${ATLAS_URI}
           AWS_BUCKET: ${AWS_BUCKET}
