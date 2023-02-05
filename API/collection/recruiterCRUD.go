@@ -24,7 +24,7 @@ func RecruiterCreate(r map[string]interface{}, client *mongo.Client, sessionCont
 		recruiter.FirstName = FirstName
 	} else {
 		log.Print("This is not string : ")
-		log.Println(r["firstname"])
+		log.Println(r["firstName"])
 	}
 
 	if selfie, ok := r["selfie"].(string); ok {

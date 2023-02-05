@@ -4,6 +4,7 @@ import (
 	collection "API/collection"
 	"context"
 	"encoding/json"
+	"log"
 	"os"
 
 	"github.com/aws/aws-lambda-go/events"
@@ -20,6 +21,7 @@ type Connection struct {
 func (client Connection) handleRequest(i context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	var ijson map[string]interface{}
 
+	log.Println(request.Body)
 	json.Unmarshal([]byte(request.Body), &ijson)
 
 	cDBRef := collection.Transaction("recruiter", ijson, client.client)
