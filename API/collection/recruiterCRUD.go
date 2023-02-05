@@ -4,6 +4,7 @@ import (
 	constant "API/constant"
 	model "API/model"
 	s3 "API/s3"
+	"log"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -12,14 +13,26 @@ import (
 func RecruiterCreate(r map[string]interface{}, client *mongo.Client, sessionContext mongo.SessionContext) (model.DBRef, error) {
 	var recruiter model.Recruiter
 
-	// company := r["company"].(map[string]interface{})
-	// recruiter.Company, _ = companyCreate(company, client, sessionContext)
+	if company, ok := r["company"].(map[string]interface{}); ok {
+		recruiter.Company, _ = companyCreate(company, client, sessionContext)
+	} else {
+		log.Print("This is not map[string]interface : ")
+		log.Println(r["company"])
+	}
 
 	if FirstName, ok := r["firstName"].(string); ok {
 		recruiter.FirstName = FirstName
+	} else {
+		log.Print("This is not string : ")
+		log.Println(r["firstname"])
 	}
 
-	recruiter.Selfie, _ = s3.Upload(r["selfie"].(string))
+	if selfie, ok := r["selfie"].(string); ok {
+		recruiter.Selfie, _ = s3.Upload(selfie)
+	} else {
+		log.Print("This is not string : ")
+		log.Println(r["selfie"])
+	}
 
 	if CompanyArray, ok := r["companyArray"].([]interface{}); ok {
 		for _, element := range CompanyArray {
