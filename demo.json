@@ -1,0 +1,75 @@
+{
+    "personalInfo": {
+        "companyName": "",
+        "postal": "",
+        "website": "",
+        "companyTurnover": "",
+        "middleName": "",
+        "lastName": "",
+        "category": "",
+        "sector": ""
+    },
+    "contactInfo": [
+        {
+            "HRExecutive": {
+                "HRName": "",
+                "HRmobile": "",
+                "HRemail": "",
+                "HRphone": ""
+            }
+        }
+    ],
+    "CTC": {
+        "totalctc": "",
+        "1stctc": "",
+        "fixedsalary": "",
+        "providentfund": "",
+        "joiningbonus": "",
+        "relocationbonus": "",
+        "patentbonus": "",
+        "educationreimbur": "",
+        "bonds": "",
+        "stocks": "",
+        "otherbenefits": ""
+    },
+    "eligibility": {
+        "btech": {
+            "HRName": [],
+            "cgpa": "",
+            "12th": "",
+            "10th": "",
+            "agelimit": ""
+        },
+        "IDD": {
+            "HRName": [],
+            "cgpa": "",
+            "12th": "",
+            "10th": "",
+            "agelimit": ""
+        },
+        "Mtech": {
+            "HRName": [],
+            "cgpa": "",
+            "12th": "",
+            "10th": "",
+            "agelimit": ""
+        }
+    },
+    "medical": {
+        "jobDescription": "",
+        "hires": "",
+        "location": "",
+        "joiningDate": ""
+    },
+    "selection": {
+        "HRName": []
+    },
+    "discipline": {
+        "btech": {
+            "HRName": []
+        },
+        "selection": {
+            "HRName": []
+        }
+    }
+}

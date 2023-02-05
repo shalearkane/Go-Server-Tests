@@ -3,7 +3,6 @@ package s3
 import (
 	"bytes"
 	"encoding/base64"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
@@ -16,8 +15,7 @@ func Upload(b64 string) (string, error) {
 	// Create an uploader with the session and default options
 	uploader := s3manager.NewUploader(sess)
 
-	dec, err := base64.StdEncoding.DecodeString(b64)
-	fmt.Println(err)
+	dec, _ := base64.StdEncoding.DecodeString(b64)
 
 	// Upload the file to S3.
 	result, err := uploader.Upload(&s3manager.UploadInput{
@@ -26,9 +24,7 @@ func Upload(b64 string) (string, error) {
 		Body:   bytes.NewReader(dec),
 	})
 	if err != nil {
-		fmt.Println(err)
-		return "404", fmt.Errorf("failed to upload file, %v", err)
+		return "404", err
 	}
-	fmt.Printf("file uploaded to, %s\n", result.Location)
 	return result.Location, nil
 }

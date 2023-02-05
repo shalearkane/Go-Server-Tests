@@ -4,7 +4,6 @@ import (
 	constant "API/constant"
 	model "API/model"
 	s3 "API/s3"
-	"fmt"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
