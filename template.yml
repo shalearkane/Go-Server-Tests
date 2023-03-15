@@ -6,14 +6,7 @@ Resources:
   API:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: server
-      Runtime: go1.x
-      CodeUri: API/.
-      Description: Store data in Mongodb
-      Timeout: 30
-      MemorySize: 128
-      # Function's execution role
-      Tracing: Active
+      PackageType: Image
       Events:
         API:
           Type: Api
@@ -24,3 +17,7 @@ Resources:
         Variables:
           ATLAS_URI: ${ATLAS_URI}
           AWS_BUCKET: ${AWS_BUCKET}
+    Metadata:
+      DockerTag: custom-lambda-go
+      DockerContext: ./API
+      Dockerfile: Dockerfile
